@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { createRoot } from "react-dom/client";
 import App from "~/components/App/App";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,6 +14,24 @@ const queryClient = new QueryClient({
     queries: { refetchOnWindowFocus: false, retry: false, staleTime: Infinity },
   },
 });
+
+// Add a response interceptor
+axios.interceptors.response.use(
+  (response) => {
+    console.log("response", JSON.stringify(response));
+    return response;
+  },
+  (error) => {
+    const responseStatus = error.response.status;
+    if (responseStatus === 400) {
+      alert(error.response.data?.data);
+    }
+    if (responseStatus === 401 || responseStatus === 403) {
+      alert(error.response.data?.message);
+    }
+    return Promise.reject(error);
+  }
+);
 
 if (import.meta.env.DEV) {
   const { worker } = await import("./mocks/browser");
