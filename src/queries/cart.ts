@@ -9,7 +9,6 @@ export function useCart() {
     const res = await axios.get<CartItem[]>(`${API_PATHS.cart}/profile/cart`, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
-        "Content-Type": "application/json",
       },
     });
     return res.data;
@@ -34,7 +33,6 @@ export function useUpsertCart() {
     axios.put<CartItem[]>(`${API_PATHS.cart}/profile/cart`, values, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
-        "Content-Type": "application/json",
       },
     })
   );
